@@ -1,0 +1,43 @@
+💭 Step 1: What do we need to find?
+We want to know which number shows up the most in the array, and specifically, it has to be more than half the size of the array.
+
+🧰 Step 2: What tool (data structure) helps us count things?
+Whenever you need to count how many times each item appears — use a HashMap!
+
+A HashMap lets you store each number as a key, and how many times it appears as the value.
+
+🪜 Step 3: What’s the step-by-step plan?
+Create a HashMap to store numbers and their counts
+(i)Loop through the array:
+(ii)If the number is already in the map → increase its count by 1
+(iii)If it’s not in the map → add it with count 1
+(iv)Loop through the map to find the number with the highest count
+(v)Return that number
+
+SOLUTION-->
+
+class Solution {
+    public int majorityElement(int[] nums) {
+        // Create a map to store number and its count
+        HashMap<Integer, Integer> map=new HashMap<>();
+        // Count how many times each number appears
+        for(int num: nums){
+            if(map.containsKey(num)){
+                map.put(num, map.get(num)+1);
+            }
+            else map.put(num,1);
+        }
+        // Find the number with the highest count
+        int max=0;
+        // Default to the first element
+        int maxkey=nums[0];
+        //traverse to find the maximum element
+        for(int temp:map.keySet()){
+            if(map.get(temp)>max){
+                max=map.get(temp);
+                maxkey=temp;
+            }
+        }
+        return maxkey;
+    }
+}

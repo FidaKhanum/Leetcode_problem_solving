@@ -1,0 +1,48 @@
+💭 Step 1: What are we trying to check?
+We need to find out if any number appears more than once in the array.
+
+If even one duplicate exists, we return true.
+If all elements are unique, we return false.
+
+🧰 Step 2: What tool helps us detect duplicates fast?
+We’ll use a HashMap.
+It stores each number as a key, and how many times it appears as the value.
+
+Why HashMap? Because:
+
+Checking if a number exists → O(1)
+Updating the count → O(1)
+Super fast and simple!
+
+🪜 Step 3: What’s the plan?
+Create a HashMap to track frequencies.
+Loop through the array:
+(i)If the number is already in the map → increment its count.
+(ii)If not → add it to the map with count 1.
+(iii)Check if any value in the map ≥ 2:
+(iv)If yes → found a duplicate → return true.
+(v)If not → all good → return false.
+
+Solution-->
+
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        boolean flag=false;
+        HashMap<Integer, Integer> map= new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            if(map.containsKey(nums[i])){
+                map.put(nums[i], map.get(nums[i])+1);
+            }
+            else
+            map.put(nums[i],1);
+        }
+        for(Integer value:map.values()){
+            if(value>=2){
+                flag=true;
+                break;
+            }
+             else flag=false;
+        }
+        return flag;
+    }
+}

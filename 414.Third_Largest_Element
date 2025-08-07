@@ -1,0 +1,49 @@
+💭 Step 1: What do we need to find?
+We want to get the third largest unique number in the array.
+👉 If there aren’t 3 unique numbers, return the largest number.
+
+🧰 Step 2: What tool (data structure) helps us?
+We need:
+No duplicates
+Elements sorted in order
+
+✅ TreeSet is perfect for this:
+It automatically keeps only unique elements
+It sorts them
+You can pick out the k-th largest easily
+
+🪜 Step 3: What’s the step-by-step plan?
+
+(i) Create a TreeSet in descending order
+So the largest numbers come first
+(ii) Loop through all numbers
+Add each to the set
+Duplicates automatically ignored
+(iii) Check if there are at least 3 unique numbers
+If so:
+Use an iterator to get the third one
+(iv) Otherwise
+If fewer than 3 unique numbers, return the largest one
+
+Solution-->
+
+class Solution {
+    public int thirdMax(int[] nums) {
+        TreeSet<Integer> set = new TreeSet<>(Collections.reverseOrder());
+
+        for (int num : nums) {
+            set.add(num);
+        }
+
+        // If there are at least 3 distinct elements, return the third one
+        if (set.size() >= 3) {
+            Iterator<Integer> it = set.iterator();
+            it.next(); // 1st max
+            it.next(); // 2nd max
+            return it.next(); // 3rd max
+        }
+
+        // Otherwise, return the maximum
+        return set.first();
+    }
+}

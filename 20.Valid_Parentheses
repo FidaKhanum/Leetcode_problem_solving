@@ -1,0 +1,50 @@
+💭 Step 1: What do we need to find?
+We want to check if a given string of brackets ((), {}, []) is valid — meaning:
+Every opening bracket has a matching closing bracket.
+Brackets close in the correct order (proper nesting).
+
+🧰 Step 2: What tool (data structure) helps us keep track of unmatched brackets?
+A Stack!
+A stack works on Last In, First Out (LIFO).
+
+When we see an opening bracket, we push it onto the stack.
+When we see a closing bracket, we check if it matches the top of the stack. If yes, pop it. If not, it's invalid.
+
+🪜 Step 3: What’s the step-by-step plan?
+(i) Create an empty stack to store opening brackets.
+(ii) Loop through each character in the string:
+  a. If it’s '(', '{', or '[' → push onto stack.
+  b. If it’s a closing bracket:
+    - If stack is empty → invalid (no matching opening).
+    - If top of stack does not match → invalid.
+    - Otherwise → pop the top element.
+(iii) After the loop, if the stack is empty → valid string; else → invalid.
+
+SOLUTION →
+
+class Solution {
+    public boolean isValid(String s) {
+        Stack<Character> st = new Stack<>();
+        
+        for (int i = 0; i <= s.length() - 1; i++) {
+            char c = s.charAt(i);
+            
+            // If opening bracket, push onto stack
+            if (c == '(' || c == '{' || c == '[') {
+                st.push(c);
+            }
+            else { // Closing bracket
+                if (st.isEmpty() ||
+                   (c == ')' && st.peek() != '(') ||
+                   (c == '}' && st.peek() != '{') ||
+                   (c == ']' && st.peek() != '[')) {
+                    return false; // Mismatch or no opening bracket
+                }
+                st.pop(); // Match found, remove from stack
+            }
+        }
+        
+        // If stack is empty, all brackets matched
+        return st.isEmpty();
+    }
+}

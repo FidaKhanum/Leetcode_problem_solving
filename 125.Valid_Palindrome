@@ -1,0 +1,48 @@
+💭 Step 1: What do we need to find?
+We want to check if a given string is a palindrome, meaning it reads the same forward and backward — ignoring spaces, punctuation, and letter case.
+
+🧰 Step 2: What tool helps us clean and compare the string?
+A StringBuffer to build a cleaned version of the string containing only letters and digits.
+Two pointers (left and right) to compare characters from both ends toward the middle.
+
+🪜 Step 3: What’s the step-by-step plan?
+(i) Convert the string to lowercase (case-insensitive check).
+(ii) Create an empty StringBuffer cleaned.
+(iii) Loop through each character in the string:
+  - If it’s a letter or digit → append to cleaned.
+(iv) Set left at the start, right at the end of cleaned.
+(v) While left < right:
+  - If characters at left and right don’t match → return false.
+  - Otherwise, move left forward and right backward.
+(vi) If loop finishes without mismatches → return true.
+
+SOLUTION →
+
+class Solution {
+    public boolean isPalindrome(String s) {
+        // Step 1: Make lowercase to ignore case differences
+        s = s.toLowerCase();
+
+        // Step 2: Clean the string by removing non-alphanumeric characters
+        StringBuffer cleaned = new StringBuffer();
+        for (char c : s.toCharArray()) {
+            if (Character.isLetterOrDigit(c)) {
+                cleaned.append(c);
+            }
+        }
+
+        // Step 3: Two-pointer check
+        int left = 0;
+        int right = cleaned.length() - 1;
+
+        while (left < right) {
+            if (cleaned.charAt(left) != cleaned.charAt(right)) {
+                return false; // Not a palindrome
+            }
+            left++;
+            right--;
+        }
+
+        return true; // Palindrome confirmed
+    }
+}

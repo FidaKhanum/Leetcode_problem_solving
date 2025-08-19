@@ -1,0 +1,36 @@
+💭 Step 1: What do we need to find?
+We want to calculate how many distinct ways someone can climb a staircase of n steps if they can take either 1 or 2 steps at a time.
+This is basically the Fibonacci sequence, where each number is the sum of the previous two.
+
+🧰 Step 2: What tools (variables) help us track the sequence?
+Instead of using an array, we just keep track of the last two values using simple integer variables:
+
+i → ways to get to the (n-2)th step
+
+j → ways to get to the (n-1)th step
+We repeatedly compute the next value using sum = i + j.
+
+🪜 Step 3: What’s the step-by-step plan?
+(i) Start with i = 0 and j = 1
+(ii) For n times:
+  a. sum = i + j → total ways for current step
+  b. Move the window forward: i = j, j = sum
+(iii) After the loop ends, sum contains the total ways to climb n stairs
+(iv) Return sum
+
+SOLUTION →
+
+class Solution {
+    public int climbStairs(int n) {
+        int i = 0, j = 1;
+        int sum = 0;
+        
+        for (int k = 0; k < n; k++) {
+            sum = i + j; // compute next number in sequence
+            i = j;       // shift values for next iteration
+            j = sum;
+        }
+        
+        return sum;
+    }
+}

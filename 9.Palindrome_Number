@@ -1,0 +1,42 @@
+💭 Step 1: What do we need to find?
+We need to check whether a given integer x is a palindrome number — meaning the number reads the same forward and backward (like 121 or 1331).
+Negative numbers are not palindromes (because of the minus sign).
+
+🧰 Step 2: What tools (variables) are we using?
+We’ll reverse the number and compare it with the original:
+
+temp keeps a copy of the original number
+sum builds the reversed number
+dig stores each digit while extracting
+
+🪜 Step 3: Step-by-step plan
+(i) If the number is negative → return false immediately
+(ii) Extract each digit using % 10 and build a reversed number
+(iii) Multiply sum by 10 and add the digit to form the reversed number
+(iv) After reversing, compare sum with the original number x
+  - If equal → palindrome → return true
+  - Else → return false
+
+SOLUTION →
+
+class Solution {
+    public boolean isPalindrome(int x) {
+        int sum = 0, temp = x, dig = 0;
+        
+        // Negative numbers are not palindromes
+        if (temp < 0) return false;
+        
+        // Reverse the number
+        while (temp > 0) {
+            dig = temp % 10;         // get last digit
+            sum = sum * 10 + dig;    // build reversed number
+            temp /= 10;             // remove last digit
+        }
+        
+        // Check if reversed number equals the original
+        if (sum == x)
+            return true;
+        else
+            return false;
+    }
+}

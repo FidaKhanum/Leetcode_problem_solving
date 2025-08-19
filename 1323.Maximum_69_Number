@@ -1,0 +1,52 @@
+💭 Step 1: What do we need to find?
+We are given a number that contains only digits 6 and 9.
+Our goal is to change at most one digit (a single 6 → 9) to make the number as large as possible.
+
+🧰 Step 2: What tools (data structure) do we use?
+We use an ArrayList to store each digit of the number (by breaking it down), so we can traverse and change the first 6 from the left into a 9.
+
+🪜 Step 3: What’s the step-by-step plan?
+
+(i) Extract each digit from the number using %10 and add it to an ArrayList
+  → This stores digits in reverse order (units digit first). Also keep count n of digits.
+
+(ii) Traverse the list backwards (from most significant digit to least):
+  - If a digit is not 9 (i.e., it's a 6), change it to 9 and break (only once).
+
+(iii) Reconstruct the number again by multiplying and adding digits in correct order.
+
+(iv) Return the new number.
+
+SOLUTION →
+
+class Solution {
+    public int maximum69Number (int num) {
+        ArrayList<Integer> arr = new ArrayList<Integer>();
+        int dig = 0;
+        int number = 0;
+        int n = 0;
+
+        // Step 1: Break the number into digits
+        while (num > 0) {
+            dig = num % 10;
+            arr.add(dig);
+            num = num / 10;
+            n++;
+        }
+
+        // Step 2: Change the first non-9 digit (from most significant side)
+        for (int i = n - 1; i >= 0; i--) {
+            if (arr.get(i) != 9) {
+                arr.set(i, 9);
+                break;
+            }
+        }
+
+        // Step 3: Rebuild the number from digits
+        for (int i = n - 1; i >= 0; i--) {
+            number = number * 10 + arr.get(i);
+        }
+        
+        return number;
+    }
+}

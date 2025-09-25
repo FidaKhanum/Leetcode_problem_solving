@@ -1,0 +1,61 @@
+💭 Step 1: What do we need to find?
+We want to search for a target element in a rotated sorted array.
+👉 If the element exists, return its index.
+👉 Otherwise, return -1.
+
+🧰 Step 2: What tool (algorithm) helps us?
+We need something that works in O(log n) (efficient searching).
+✅ Binary Search is the right tool:
+At every step, check the middle element.
+One half of the array will always be sorted (either left or right).
+Decide which half to search in by checking sorted order.
+
+🪜 Step 3: What’s the step-by-step plan?
+
+(i) Initialize two pointers:
+s = 0 (start)
+e = nums.length - 1 (end).
+
+(ii) While s <= e:
+Find mid = s + (e - s)/2.
+If nums[mid] == target, return mid.
+
+(iii) Check which side is sorted:
+If left half is sorted (nums[s] <= nums[mid]):
+If target lies in this left range (nums[s] <= target <= nums[mid]), search left (e = mid - 1).
+Else, search right (s = mid + 1).
+Else (right half is sorted):
+If target lies in this right range (nums[mid] <= target <= nums[e]), search right (s = mid + 1).
+Else, search left (e = mid - 1).
+
+(iv) If loop ends with no match → return -1.
+
+Solution:
+
+class Solution {
+    public int search(int[] nums, int target) {
+        int s = 0, e = nums.length - 1;
+        while (s <= e) {
+            int mid = s + (e - s) / 2;
+
+            if (nums[mid] == target) {
+                return mid;
+            }
+
+            if (nums[s] <= nums[mid]) { // left sorted
+                if (nums[s] <= target && target <= nums[mid]) {
+                    e = mid - 1;
+                } else {
+                    s = mid + 1;
+                }
+            } else { // right sorted
+                if (nums[mid] <= target && target <= nums[e]) {
+                    s = mid + 1;
+                } else {
+                    e = mid - 1;
+                }
+            }
+        }
+        return -1;
+    }
+}

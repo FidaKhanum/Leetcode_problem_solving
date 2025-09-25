@@ -1,0 +1,54 @@
+💭 Step 1: What do we need to find?
+We want to check if a target exists in a rotated sorted array that may contain duplicates.
+👉 If the target exists, return true.
+👉 Otherwise, return false.
+
+🧰 Step 2: What tool (algorithm) helps us?
+Since duplicates are present, the classic binary search logic gets trickier.
+✅ We still use two pointers (s and e) and gradually narrow down the range by comparing values at both ends.
+✅ We skip duplicates by moving pointers inward when needed.
+
+🪜 Step 3: What’s the step-by-step plan?
+
+(i) Initialize:
+s = 0 (start), e = nums.length - 1 (end).
+
+(ii) While s <= e:
+If either nums[s] == target or nums[e] == target → found, return true.
+
+(iii) If nums[s] < target:
+That means the target is greater than the start value, so move s forward:
+First skip duplicates: while (s < e && nums[s+1] == nums[s]) s++;
+Then move s++.
+
+(iv) Else if nums[e] > target:
+That means the target is smaller than the end value, so move e backward:
+First skip duplicates: while (s < e && nums[e-1] == nums[e]) e--;
+Then move e--.
+
+(v) If neither condition holds → break (target can’t be found).
+
+(vi) After the loop, if no match → return false.
+
+Solution:
+
+class Solution {
+    public boolean search(int[] nums, int target) {
+        int s = 0, e = nums.length - 1;
+        while (s <= e) {
+            if (nums[s] == target || nums[e] == target) {
+                return true;
+            } 
+            else if (nums[s] < target) {
+                while (s < e && nums[s + 1] == nums[s]) s++;
+                s++;
+            } 
+            else if (nums[e] > target) {
+                while (s < e && nums[e - 1] == nums[e]) e--;
+                e--;
+            } 
+            else break;
+        }
+        return false;
+    }
+}

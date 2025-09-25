@@ -1,0 +1,53 @@
+💭 Step 1: What do we need to find?
+We want to sort the characters in a string based on their frequency (most frequent first).
+👉 Example:
+s = "tree" → Output could be "eert" or "eetr".
+(Characters with higher frequency come first; order among same-frequency chars doesn’t matter).
+
+🧰 Step 2: What tool (data structure) helps us?
+We need:
+To count frequencies → ✅ HashMap<Character, Integer>
+To sort characters by frequency → ✅ List<Map.Entry> with custom comparator
+
+🪜 Step 3: What’s the step-by-step plan?
+
+(i) Create a HashMap to count frequency of each character.
+For every char c, do map.put(c, map.getOrDefault(c, 0) + 1).
+
+(ii) Convert the map into a list of entries (List<Map.Entry>).
+
+(iii) Sort this list in descending order of frequency using a comparator:
+list.sort((a, b) -> b.getValue().compareTo(a.getValue())).
+
+(iv) Build the result string:
+For each (char, freq) pair, append that character freq times to the result.
+
+(v) Return the final string.
+
+Solution:
+
+class Solution {
+    public String frequencySort(String s) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        String str = "";
+
+        // Step 1: Count frequencies
+        for (char c : s.toCharArray()) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+
+        // Step 2: Convert to list and sort by frequency (descending)
+        List<Map.Entry<Character, Integer>> list = new ArrayList<>(map.entrySet());
+        list.sort((a, b) -> b.getValue().compareTo(a.getValue()));
+
+        // Step 3: Build the result string
+        for (Map.Entry<Character, Integer> entry : list) {
+            char ch = entry.getKey();
+            int freq = entry.getValue();
+            for (int i = 0; i < freq; i++) {
+                str = str + ch;
+            }
+        }
+        return str;
+    }
+}

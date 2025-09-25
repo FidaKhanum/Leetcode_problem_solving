@@ -1,0 +1,52 @@
+💭 Step 1: What do we need to find?
+We want to rotate an array nums to the right by k steps.
+👉 Example:
+nums = [1,2,3,4,5,6,7], k = 3 → rotated = [5,6,7,1,2,3,4].
+
+🧰 Step 2: What tool (algorithm) helps us?
+We need a way to shift the elements efficiently (not one by one).
+✅ The Reverse Method is perfect:
+Reverse the whole array.
+Reverse the first k elements.
+Reverse the remaining n-k elements.
+This gives us the rotated array in O(n) time and O(1) extra space.
+
+🪜 Step 3: What’s the step-by-step plan?
+
+(i) Define a helper function reverse(nums, s, e) that swaps elements while s < e.
+
+(ii) Normalize k:
+k = k % nums.length (since rotating n times = same array).
+
+(iii) Perform 3 reversals:
+Reverse the whole array → elements get flipped.
+Reverse the first k elements → these become the new starting segment.
+Reverse the last n-k elements → restore them into the correct order.
+
+Solution:
+
+class Solution {
+    public void reverse(int[] nums, int s, int e) {
+        while (s < e) {
+            int t = nums[s];
+            nums[s] = nums[e];
+            nums[e] = t;
+            s++;
+            e--;
+        }
+    }
+
+    public void rotate(int[] nums, int k) {
+        k = k % nums.length;   // Handle cases where k > n
+        int n = nums.length;
+
+        // Step 1: Reverse entire array
+        reverse(nums, 0, n - 1);
+
+        // Step 2: Reverse first k elements
+        reverse(nums, 0, k - 1);
+
+        // Step 3: Reverse remaining n-k elements
+        reverse(nums, k, n - 1);
+    }
+}

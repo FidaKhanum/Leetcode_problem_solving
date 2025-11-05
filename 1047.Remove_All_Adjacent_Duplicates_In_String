@@ -1,0 +1,44 @@
+💭 Step 1: What do we need to find?
+We are given a string s, and we need to remove all adjacent duplicate characters — meaning, if two same characters appear next to each other, both should be deleted.
+We must continue doing this until there are no adjacent duplicates left.
+
+
+🧰 Step 2: What tool (data structure) helps us handle this?
+A Stack!
+The stack helps us keep track of characters as we scan through the string.
+If the current character is the same as the top of the stack, we pop (remove) the top — since that forms a duplicate pair.
+Otherwise, we push the new character onto the stack.
+
+🪜 Step 3: Step-by-step plan
+(i) Create an empty stack of characters.
+(ii) Loop through each character in the string s:
+  - If the stack isn’t empty and the top of the stack equals the current character → pop it (remove the duplicate).
+  - Else → push the current character onto the stack.
+(iii) After the loop, the stack contains the final string with all duplicates removed.
+(iv) Build the answer by concatenating all characters in the stack.
+(v) Return the resulting string.
+
+Solution:
+class Solution {
+    public String removeDuplicates(String s) {
+        Stack<Character> st = new Stack<>();
+        
+        // Step 1: Process each character
+        for (int i = 0; i < s.length(); i++) {
+            // If top of stack is same as current char → remove it
+            if (!st.isEmpty() && st.peek() == s.charAt(i)) {
+                st.pop();
+            } else {
+                // Otherwise, add current char to stack
+                st.push(s.charAt(i));
+            }
+        }
+
+        // Step 2: Build the final string from stack
+        String ans = "";
+        for (char c : st) {
+            ans += c;
+        }
+        return ans;
+    }
+}

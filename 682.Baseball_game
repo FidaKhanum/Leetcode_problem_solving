@@ -1,0 +1,59 @@
+💭 Step 1: What do we need to find?
+We’re given a list of operations representing scores in a baseball game.
+Each operation tells us to either add a new score or modify previous scores.
+We need to compute the total sum after performing all the operations.
+
+🧰 Step 2: What tool (data structure) helps us track previous scores?
+A Stack 🧱!
+We use it to keep track of valid previous scores.
+When an operation depends on past scores (like “+” or “D”), we can easily access the top one or two values from the stack.
+
+🪜 Step 3: Step-by-step plan
+(i) Create an empty stack of integers to store valid scores.
+(ii) Loop through each operation in the input array:
+
+  🔹 If operation is "+" →
+   - Pop the last two scores → add them together → push both back plus their sum.
+
+  🔹 If operation is "D" →
+   - Push double the top score onto the stack.
+
+  🔹 If operation is "C" →
+   - Remove (pop) the most recent score.
+
+  🔹 Otherwise →
+   - Convert the string to an integer and push it as a new score.
+
+(iii) After processing all operations, pop everything from the stack and add to sum.
+(iv) Return the final sum.
+
+Solution-->
+
+class Solution {
+    public int calPoints(String[] operations) {
+        int sum=0;
+        Stack<Integer> s=new Stack<>();
+        for(int i=0;i<operations.length;i++){
+           if(operations[i].equals("+")){
+                int v1=s.pop();
+                int v2=s.pop();
+                s.push(v2);
+                s.push(v1);
+                s.push(v1+v2);
+            }
+            else if(operations[i].equals("D")){
+                s.push(s.peek()*2);
+            }
+            else if(operations[i].equals("C")){
+                s.pop();
+            }
+            else{
+                s.push(Integer.parseInt(operations[i]));
+            }
+        }
+        while(!s.isEmpty()){
+            sum+=s.pop();
+        }
+        return sum;
+    }
+}

@@ -1,0 +1,61 @@
+💭 Step 1: What do we need to find?
+We want to find the longest common prefix string among all strings in the array.
+👉 If there is no common prefix, return an empty string "".
+
+🧰 Step 2: What tool (idea) helps us?
+We use a sorting-based approach.
+
+✅ Key insight:
+After sorting the array lexicographically,
+The common prefix of the entire array must be the common prefix between:
+the first string and
+the last string
+
+Why?
+Because they are the most different strings after sorting.
+
+🪜 Step 3: What’s the step-by-step plan?
+(i) Sort the array of strings.
+(ii) Take:
+str1 = strs[0] (first string)
+str2 = strs[strs.length - 1] (last string)
+(iii) Compare characters of str1 and str2 one by one:
+Start from index 0.
+Keep moving forward while characters are equal.
+(iv) Stop when characters differ or when str1 ends.
+(v) Return:
+The substring from index 0 to the last matching index.
+If no characters matched, return "".
+
+✅ Solution:
+
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        Arrays.sort(strs);
+
+        String str1 = strs[0];
+        String str2 = strs[strs.length - 1];
+
+        int index = 0;
+        while (index < str1.length()) {
+            if (str1.charAt(index) == str2.charAt(index))
+                index++;
+            else
+                break;
+        }
+        return index == 0 ? "" : str1.substring(0, index);
+    }
+}
+
+
+⚡ Example Walkthrough:
+strs = ["flower","flow","flight"]
+After sorting → ["flight","flow","flower"]
+Compare "flight" and "flower"
+Matching chars → "fl"
+Output → "fl" ✅
+
+⏱️ Complexity Analysis:
+
+Time: O(n log n) (due to sorting)
+Space: O(1) extra space (ignoring sort internals)

@@ -1,0 +1,63 @@
+💭 Step 1: What do we need to find?
+We want to find two different indices in the array such that:
+
+nums[i] + nums[j] = target
+
+👉 Return the indices of those two numbers.
+👉 It is guaranteed that exactly one solution exists.
+
+🧰 Step 2: What tool (data structure) helps us?
+We need:
+Fast lookup to check if a number already exists
+To remember the index of previously seen numbers
+
+✅ HashMap is perfect:
+Key → number
+Value → index of that number
+
+This allows O(1) average lookup time.
+
+🪜 Step 3: What’s the step-by-step plan?
+(i) Create a HashMap<Integer, Integer>
+Stores (number → index) pairs.
+(ii) Traverse the array using a loop.
+(iii) For each element nums[i]:
+Calculate the complement:
+complement = target - nums[i].
+(iv) Check if the complement already exists in the map:
+If yes → we found the pair → return indices.
+If no → store the current number and its index in the map.
+(v) If the loop ends without finding a pair → throw an exception
+(because the problem guarantees a solution).
+
+✅ Solution:
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int i = 0;
+
+        while (i != nums.length) {
+            int complement = target - nums[i];
+
+            if (map.containsKey(complement))
+                return new int[]{i, map.get(complement)};
+            else
+                map.put(nums[i], i);
+
+            i++;
+        }
+        throw new IllegalArgumentException("No match");
+    }
+}
+
+
+⚡ Example Walkthrough:
+nums = [2,7,11,15], target = 9
+i = 0 → complement = 7 → not in map → put (2,0)
+i = 1 → complement = 2 → found in map → return {1,0} ✅
+
+⏱️ Complexity Analysis:
+
+Time: O(n) (single pass)
+Space: O(n) (HashMap storage)

@@ -1,48 +1,136 @@
-💭 Step 1: What do we need to find?
-We want to check if a given string is a palindrome, meaning it reads the same forward and backward — ignoring spaces, punctuation, and letter case.
+<h1 align="center">Valid Parentheses Problem using Stack</h1>
+🧠 Basic Idea
 
-🧰 Step 2: What tool helps us clean and compare the string?
-A StringBuffer to build a cleaned version of the string containing only letters and digits.
-Two pointers (left and right) to compare characters from both ends toward the middle.
+We are given:
 
-🪜 Step 3: What’s the step-by-step plan?
-(i) Convert the string to lowercase (case-insensitive check).
-(ii) Create an empty StringBuffer cleaned.
-(iii) Loop through each character in the string:
-  - If it’s a letter or digit → append to cleaned.
-(iv) Set left at the start, right at the end of cleaned.
-(v) While left < right:
-  - If characters at left and right don’t match → return false.
-  - Otherwise, move left forward and right backward.
-(vi) If loop finishes without mismatches → return true.
+A string s containing only brackets:
+(, ), {, }, [, ]
 
-SOLUTION →
+🎯 Goal:
+Check whether the given string of brackets is valid.
+
+A string is considered valid if:
+
+Every opening bracket has a matching closing bracket
+
+Brackets are closed in the correct order (proper nesting)
+
+🧰 Why Stack?
+
+We need:
+
+📌 To track unmatched opening brackets
+
+🔁 To process brackets in Last In, First Out (LIFO) order
+
+✅ Stack is perfect:
+
+Push opening brackets
+
+Pop when a matching closing bracket appears
+
+🪜 Step-by-Step Explanation
+1️⃣ Create a Stack
+
+We create an empty stack:
+
+Stack<Character> st
+
+
+It stores:
+
+opening brackets → '(', '{', '['
+
+2️⃣ Traverse the string
+
+We loop through each character of the string using index i.
+
+3️⃣ Handle opening brackets
+
+If the current character is:
+
+'('
+
+'{'
+
+'['
+
+👉 Push it onto the stack.
+
+4️⃣ Handle closing brackets
+
+If the current character is a closing bracket:
+
+❌ If the stack is empty
+→ no matching opening bracket
+→ return false
+
+❌ If the top of the stack does not match the closing bracket
+→ invalid pair
+→ return false
+
+✅ Otherwise
+→ matching pair found
+→ pop the top element from the stack
+
+5️⃣ Final check
+
+After traversing the entire string:
+
+✅ If the stack is empty → all brackets matched → valid
+
+❌ If the stack is not empty → unmatched opening brackets → invalid
+
+⚡ Example Walkthrough
+
+Input:
+
+s = "{[()]}"
+
+Character	Stack State	Action
+{	{	push
+[	{ [	push
+(	{ [ (	push
+)	{ [	pop
+]	{	pop
+}	empty	pop
+
+📌 Output:
+
+true
+
+🧮 Complexity Analysis
+Metric	Complexity
+Time	O(n)
+Space	O(n)
+💻 Code
+import java.util.Stack;
 
 class Solution {
-    public boolean isPalindrome(String s) {
-        // Step 1: Make lowercase to ignore case differences
-        s = s.toLowerCase();
+    public boolean isValid(String s) {
 
-        // Step 2: Clean the string by removing non-alphanumeric characters
-        StringBuffer cleaned = new StringBuffer();
-        for (char c : s.toCharArray()) {
-            if (Character.isLetterOrDigit(c)) {
-                cleaned.append(c);
+        Stack<Character> st = new Stack<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            // If opening bracket, push onto stack
+            if (c == '(' || c == '{' || c == '[') {
+                st.push(c);
+            }
+            // If closing bracket
+            else {
+                if (st.isEmpty() ||
+                   (c == ')' && st.peek() != '(') ||
+                   (c == '}' && st.peek() != '{') ||
+                   (c == ']' && st.peek() != '[')) {
+                    return false;
+                }
+                st.pop(); // Matching pair found
             }
         }
 
-        // Step 3: Two-pointer check
-        int left = 0;
-        int right = cleaned.length() - 1;
-
-        while (left < right) {
-            if (cleaned.charAt(left) != cleaned.charAt(right)) {
-                return false; // Not a palindrome
-            }
-            left++;
-            right--;
-        }
-
-        return true; // Palindrome confirmed
+        // Stack should be empty if valid
+        return st.isEmpty();
     }
 }
